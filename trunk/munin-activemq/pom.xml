@@ -3,9 +3,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mpobjects.munin</groupId>
 	<artifactId>munin-activemq</artifactId>
-	<name>ActiveMQ Munin Plugin</name>
+	<name>Munin ActiveMQ Plugin</name>
 	<version>1.0.0-SNAPSHOT</version>
 	<description>Munin plugin for monitoring ActiveMQ instances through JMX</description>
+	<url>https://sourceforge.net/p/munin-activemq/home/</url>
+	<issueManagement>
+		<system>SourceForge.net 2.0</system>
+		<url>https://sourceforge.net/p/munin-activemq/tickets/</url>
+	</issueManagement>
+	<scm>
+		<connection>SVN</connection>
+		<url>svn://svn.code.sf.net/p/munin-activemq/svn munin-activemq</url>
+	</scm>
 	<organization>
 		<name>MP Objects</name>
 		<url>http://www.mp-objects.com</url>
