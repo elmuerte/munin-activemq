@@ -1,0 +1,11 @@
+# Defaults for all activemq plugins
+[activemq_*]
+#env.JMX_HOST	localhost
+#env.JMX_PORT	1099
+#env.JMX_USER	smx
+#env.JMX_PASS	smx
+#env.DESTINATIONS       Queue:Foo Queue:Bar
+
+# Override for specific plugins
+#[activemq_size]
+#env.DESTINATIONS	Queue:Quux
