@@ -1,0 +1,5 @@
+munin-java-activemq-plugins (0.0.2) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Michiel Hendriks <michiel.hendriks@mp-objects.com>  Tue, 23 Nov 2010 15:17:34 +0100
