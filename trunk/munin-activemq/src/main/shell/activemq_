@@ -1,0 +1,63 @@
+#!/bin/bash
+#%# family=auto
+#%# capabilities=autoconf suggest
+
+#
+# Required environment variables:
+#
+# DESTINATIONS
+# Space separated list of AMQ destinations. Use `./activemq_ list` to get an existing list.
+#
+#
+# Optional environment variables:
+#
+# JMX_HOST
+# JMX_PORT
+# JMX_USER
+# JMX_PASS
+#
+
+
+# full script path
+SCRIPT=`readlink -f "${0}"`
+
+# just the name of the script
+SCRIPT_NAME=`basename "${SCRIPT}"`
+
+# the the plugin function (the added part to the symlink)
+PLUGIN_FUNC=`basename "${0}" | sed s/^${SCRIPT_NAME}//g`
+
+# The jar file to execute
+JAR="/usr/share/java/munin-activemq.jar"
+
+# Check for if the plugin script is named correctly
+if [ -z "${PLUGIN_FUNC}" ]; then
+    if [ "${1}" != "suggest" -a "${1}" != "autoconf" -a "${1}" != "list" ]; then
+	echo "Run \`${0} suggest\` to find aliasses for this plugin" >&2;
+	exit 1;
+    fi
+fi
+
+# If no action, use fetch
+if [ -z "${1}" ]; then
+    ACT="fetch";
+else
+    ACT="${1}"
+fi
+
+# find and verify java
+if [ -z "${JAVA}" ]; then
+   JAVA=`type -p java 2> /dev/null`
+fi 
+if ! [ -x "${JAVA}" ]; then
+    echo "Cannot execute java: ${JAVA}" >&2
+    exit 1;
+fi
+
+# check jar file
+if ! [ -r "${JAR}" ]; then
+    echo "Cannot read required jar file: ${JAR}" >&2
+    exit 1;
+fi
+
+exec ${JAVA} -jar ${JAR} ${ACT} ${PLUGIN_FUNC} ${DESTINATIONS}
