@@ -12,8 +12,8 @@
 		<url>https://sourceforge.net/p/munin-activemq/tickets/</url>
 	</issueManagement>
 	<scm>
-		<connection>SVN</connection>
-		<url>svn://svn.code.sf.net/p/munin-activemq/svn munin-activemq</url>
+		<connection>Subversion</connection>
+		<url>svn://svn.code.sf.net/p/munin-activemq/svn/trunk/munin-activemq</url>
 	</scm>
 	<organization>
 		<name>MP Objects</name>
