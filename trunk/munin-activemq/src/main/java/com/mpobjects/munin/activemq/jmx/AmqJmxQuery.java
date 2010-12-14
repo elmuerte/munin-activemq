@@ -204,9 +204,9 @@ public class AmqJmxQuery extends JmxConnection {
 				println(name + ".label " + formatDestination(dest));
 				println(name + ".type GAUGE");
 				println(name + ".min 0");
-				// 1 message on the queue could be a fluke, so from 2 it's a warning
-				println(name + ".warning 2");
-				println(name + ".critical 5");
+				// TODO: make this configurable some way
+				// println(name + ".warning 2");
+				// println(name + ".critical 5");
 			}
 		}
 	}
