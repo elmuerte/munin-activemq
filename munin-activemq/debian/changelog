@@ -1,3 +1,9 @@
+munin-java-activemq-plugins (0.0.3) lucid; urgency=low
+
+  * Made various improvements to the Debian package configuration. It now builds a proper package with everything included.
+
+ -- Michiel Hendriks <michiel.hendriks@mp-objects.com>  Thu, 16 Dec 2010 15:06:46 +0100
+
 munin-java-activemq-plugins (0.0.2) unstable; urgency=low
 
   * Initial Release.
