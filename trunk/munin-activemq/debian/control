@@ -4,10 +4,17 @@ Priority: extra
 Maintainer: Michiel Hendriks <michiel.hendriks@mp-objects.com>
 Build-Depends: cdbs, debhelper (>= 7), java6-sdk, maven-debian-helper
 Standards-Version: 3.8.3
-Homepage: <insert the upstream URL, if relevant>
+Homepage: http://sourceforge.net/p/munin-activemq
 
 Package: munin-java-activemq-plugins
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, munin-node (>= 1.4), java6-runtime
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: Munin-plugin for monitoring ActiveMQ queues and topics.
+ This package provides a set of plugins for the Munin monitoring software.
+ The plugins included allow monitoring of the size, traffic and number of
+ subscribers on queues and topics active in ActiveMQ.
+ .
+ This plugin requires a JMX connection to the ActiveMQ instance. It can be
+ used on standalone instances of ActiveMQ or embedded instances, for example
+ withing Apache ServiceMix.
+

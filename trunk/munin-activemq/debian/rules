@@ -6,3 +6,8 @@ include /usr/share/cdbs/1/class/maven.mk
 # Add here any variable or target overrides you need.
 
 JAVA_HOME := /usr/lib/jvm/java-6-openjdk
+
+install/munin-java-activemq-plugins::
+	install -D --mode=644 etc/munin/plugin-conf.d/activemq_ $(DEB_DESTDIR)/etc/munin/plugin-conf.d/activemq_
+	install -D --mode=744 usr/share/munin/plugins/activemq_ $(DEB_DESTDIR)/usr/share/munin/plugins/activemq_
+

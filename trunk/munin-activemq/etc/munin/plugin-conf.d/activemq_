@@ -1,0 +1,27 @@
+[activemq_*]
+## The hostname to connect to.
+## Default: localhost
+#env.JMX_HOST localhost
+
+## The port where the JMX server is listening
+## Default: 1099
+#env.JMX_PORT 1099
+
+## The username required to authenticate to the JMX server.
+## When enabling JMX for a plain ActiveMQ install, no authentication is needed.
+## The default username for JMX run by ServiceMix is 'smx'
+## Default: 
+#env.JMX_USER smx
+
+## The password required to authenticate to the JMX server.
+## The default password for JMX run by ServiceMix is 'smx'
+## Default:
+#env.JMX_PASS smx
+
+## Space separated list of destinations to create graphs for.
+## Default:
+#env.DESTINATIONS Queue:foo Queue:bar
+
+## You can override certain configuration variables for specific plugins
+#[activemq_traffic]
+#env.DESTINATIONS Topic:MyTopic Queue:foo
