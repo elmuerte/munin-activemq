@@ -1,3 +1,9 @@
+munin-java-activemq-plugins (0.0.4) lucid; urgency=low
+
+  * Changed the field delimiter from $ to _, conforming to munin standards. This should fix issues with older munin master versions.
+
+ -- Michiel Hendriks <michiel.hendriks@mp-objects.com>  Wed, 26 Jan 2011 10:49:06 +0100
+
 munin-java-activemq-plugins (0.0.3) lucid; urgency=low
 
   * Made various improvements to the Debian package configuration. It now builds a proper package with everything included.
