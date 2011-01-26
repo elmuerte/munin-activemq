@@ -146,7 +146,7 @@ public class AmqJmxQuery extends JmxConnection {
 	 * @return
 	 */
 	protected String formatGraphName(ObjectName aDest, String aAttr) {
-		return String.format("%s$%s$%s", aDest.getKeyProperty(KEY_TYPE), aDest.getKeyProperty(KEY_DESTINATION).replaceAll("[^a-zA-Z0-9]+", "_"), aAttr);
+		return String.format("%s_%s_%s", aDest.getKeyProperty(KEY_TYPE), aDest.getKeyProperty(KEY_DESTINATION).replaceAll("[^a-zA-Z0-9]+", "_"), aAttr);
 	}
 
 	protected String formatDestination(ObjectName aDest) {
