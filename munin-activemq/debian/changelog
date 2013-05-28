@@ -1,3 +1,10 @@
+munin-java-activemq-plugins (0.1.0) lucid; urgency=low
+
+  * Environment variable BROKER_NAME can be set to the name of the ActiveMQ broker.
+  * Support for new JMX names as introduced in ActiveMQ 5.8
+
+ -- Michiel Hendriks <michiel.hendriks@mp-objects.com>  Tue, 28 May 2013 11:57:20 +0200
+
 munin-java-activemq-plugins (0.0.4) lucid; urgency=low
 
   * Changed the field delimiter from $ to _, conforming to munin standards. This should fix issues with older munin master versions.
