@@ -18,6 +18,10 @@
 ## Default:
 #env.JMX_PASS smx
 
+## The name of the ActiveMQ broker to talk to.
+## Default: localhost
+#env.BROKER_NAME localhost
+
 ## Space separated list of destinations to create graphs for.
 ## Default:
 #env.DESTINATIONS Queue:foo Queue:bar
