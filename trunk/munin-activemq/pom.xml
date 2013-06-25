@@ -4,7 +4,7 @@
 	<groupId>com.mpobjects.munin</groupId>
 	<artifactId>munin-activemq</artifactId>
 	<name>Munin ActiveMQ Plugin</name>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<description>Munin plugin for monitoring ActiveMQ instances through JMX</description>
 	<url>https://sourceforge.net/p/munin-activemq/home/</url>
 	<issueManagement>
