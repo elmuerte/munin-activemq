@@ -17,8 +17,12 @@
 package com.mpobjects.munin.activemq.jmx;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,6 +90,7 @@ public class AmqJmxQuery extends JmxConnection {
 			output.out.println("no (unable to connect)");
 			return;
 		}
+		aDests = expandDestinations(aDests);
 		if (aDests.isEmpty()) {
 			output.out.println("yes (no destinations checked)");
 		} else {
@@ -129,6 +134,12 @@ public class AmqJmxQuery extends JmxConnection {
 		if (mode == null) {
 			throw new IllegalStateException("No query mode was set");
 		}
+		if (!connect()) {
+			output.err.println("Unable to connect");
+			output.setExitCode(1);
+			return;
+		}
+		aDests = expandDestinations(aDests);
 		List<ObjectName> destinations = new ArrayList<ObjectName>();
 		for (String destStr : aDests) {
 			try {
@@ -159,27 +170,12 @@ public class AmqJmxQuery extends JmxConnection {
 			return;
 		}
 
-		// now try to find all queue and topics
-		try {
-			ObjectName name = ObjectName.getInstance(namingScheme.brokerBean(brokerName));
-
-			AttributeList values = connection.getAttributes(name, new String[] { "Queues", "Topics" });
-			for (Attribute attr : values.asList()) {
-				// should return an array of object names
-				if (attr.getValue() instanceof ObjectName[]) {
-					for (ObjectName objName : (ObjectName[]) attr.getValue()) {
-						String type = objName.getKeyProperty(namingScheme.destinationType());
-						String destination = objName.getKeyProperty(namingScheme.destinationName());
-						if ("queue".equalsIgnoreCase(type) || "topic".equalsIgnoreCase(type)) {
-							output.out.print(type);
-							output.out.print(":");
-							output.out.println(destination);
-						}
-					}
-				}
+		for (Entry<String, Set<String>> entry : getDestinations().entrySet()) {
+			for (String dest : entry.getValue()) {
+				output.out.print(entry.getKey());
+				output.out.print(":");
+				output.out.println(dest);
 			}
-		} catch (Exception e) {
-			e.printStackTrace(output.err);
 		}
 	}
 
@@ -196,6 +192,7 @@ public class AmqJmxQuery extends JmxConnection {
 			output.setExitCode(1);
 			return;
 		}
+		aDests = expandDestinations(aDests);
 		for (String destStr : aDests) {
 			ObjectName dest;
 			try {
@@ -231,6 +228,48 @@ public class AmqJmxQuery extends JmxConnection {
 		}
 	}
 
+	/**
+	 * Expand regular expressions in the destination
+	 * 
+	 * @param aDests
+	 * @return
+	 */
+	protected List<String> expandDestinations(List<String> aDests) {
+		List<String> result = new ArrayList<String>();
+
+		Map<String, Set<String>> knownDests = null;
+
+		for (String dest : aDests) {
+			if (dest.startsWith("+")) {
+				// expand the regular expression
+				dest = dest.substring(1);
+				String type = "queue";
+				if (dest.toLowerCase().startsWith("queue:")) {
+					dest = dest.substring("queue:".length() + 1);
+				} else if (dest.toLowerCase().startsWith("topic:")) {
+					dest = dest.substring("topic:".length() + 1);
+					type = "topic";
+				}
+				if (knownDests == null) {
+					knownDests = getDestinations();
+				}
+				Set<String> candidates = knownDests.get(type);
+				if (candidates == null) {
+					continue;
+				}
+				Pattern pat = Pattern.compile(dest);
+				for (String can : candidates) {
+					if (pat.matcher(can).matches()) {
+						result.add(String.format("%s:%s", type, can));
+					}
+				}
+			} else {
+				result.add(dest);
+			}
+		}
+		return result;
+	}
+
 	protected String formatDestination(ObjectName aDest) {
 		return String.format("%s: %s", aDest.getKeyProperty(namingScheme.destinationType()), aDest.getKeyProperty(namingScheme.destinationName()));
 	}
@@ -261,6 +300,42 @@ public class AmqJmxQuery extends JmxConnection {
 			default:
 				throw new IllegalStateException("Unknown mode: " + mode);
 		}
+	}
+
+	/**
+	 * @return A all known destinations
+	 */
+	protected Map<String, Set<String>> getDestinations() {
+		Map<String, Set<String>> result = new HashMap<String, Set<String>>();
+		result.put("queue", new TreeSet<String>(String.CASE_INSENSITIVE_ORDER));
+		result.put("topic", new TreeSet<String>(String.CASE_INSENSITIVE_ORDER));
+
+		try {
+			ObjectName name = ObjectName.getInstance(namingScheme.brokerBean(brokerName));
+
+			AttributeList values = connection.getAttributes(name, new String[] { "Queues", "Topics" });
+			for (Attribute attr : values.asList()) {
+				// should return an array of object names
+				if (attr.getValue() instanceof ObjectName[]) {
+					for (ObjectName objName : (ObjectName[]) attr.getValue()) {
+						String type = objName.getKeyProperty(namingScheme.destinationType());
+						String destination = objName.getKeyProperty(namingScheme.destinationName());
+						if ("queue".equalsIgnoreCase(type) || "topic".equalsIgnoreCase(type)) {
+							Set<String> dests = result.get(type.toLowerCase());
+							if (dests == null) {
+								dests = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+								result.put(type, dests);
+							}
+							dests.add(destination);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace(output.err);
+		}
+
+		return result;
 	}
 
 	/**
