@@ -1,3 +1,9 @@
+munin-java-activemq-plugins (0.2.0) precise; urgency=low
+
+  * Added support for destination wildcards
+
+ -- Michiel Hendriks <michiel.hendriks@mp-objects.com>  Fri, 16 Jan 2015 14:11:50 +0100
+
 munin-java-activemq-plugins (0.1.0) lucid; urgency=low
 
   * Environment variable BROKER_NAME can be set to the name of the ActiveMQ broker.
