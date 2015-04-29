@@ -44,11 +44,11 @@ public class AmqJmxQuery extends JmxConnection {
 	 */
 	protected static final Pattern DEST_PATTERN = Pattern.compile("((\\w+):)?(.*)");
 
+	protected String brokerName = "localhost";
+
 	protected QueryMode mode = null;
 
 	protected NamingScheme namingScheme;
-
-	protected String brokerName = "localhost";
 
 	public AmqJmxQuery(Output aOutput) {
 		super(aOutput);
@@ -80,9 +80,9 @@ public class AmqJmxQuery extends JmxConnection {
 
 	/**
 	 * Print the autoconf output.
-	 * 
+	 *
 	 * @param aDests
-	 * 
+	 *
 	 * @param listDests
 	 */
 	public void printAutoConf(List<String> aDests) {
@@ -127,7 +127,7 @@ public class AmqJmxQuery extends JmxConnection {
 
 	/**
 	 * Print the configuration for the given destinations
-	 * 
+	 *
 	 * @param aDests
 	 */
 	public void printConfig(List<String> aDests) {
@@ -181,7 +181,7 @@ public class AmqJmxQuery extends JmxConnection {
 
 	/**
 	 * Print the values for the given destinations
-	 * 
+	 *
 	 * @param aDests
 	 */
 	public void printValues(List<String> aDests) {
@@ -230,7 +230,7 @@ public class AmqJmxQuery extends JmxConnection {
 
 	/**
 	 * Expand regular expressions in the destination
-	 * 
+	 *
 	 * @param aDests
 	 * @return
 	 */
@@ -243,11 +243,17 @@ public class AmqJmxQuery extends JmxConnection {
 			if (dest.startsWith("+")) {
 				// expand the regular expression
 				dest = dest.substring(1);
+				boolean matchMode = true;
+				// invert selection
+				if (dest.startsWith("!")) {
+					dest = dest.substring(1);
+					matchMode = false;
+				}
 				String type = "queue";
 				if (dest.toLowerCase().startsWith("queue:")) {
-					dest = dest.substring("queue:".length() + 1);
+					dest = dest.substring("queue:".length());
 				} else if (dest.toLowerCase().startsWith("topic:")) {
-					dest = dest.substring("topic:".length() + 1);
+					dest = dest.substring("topic:".length());
 					type = "topic";
 				}
 				if (knownDests == null) {
@@ -259,7 +265,7 @@ public class AmqJmxQuery extends JmxConnection {
 				}
 				Pattern pat = Pattern.compile(dest);
 				for (String can : candidates) {
-					if (pat.matcher(can).matches()) {
+					if (pat.matcher(can).matches() == matchMode) {
 						result.add(String.format("%s:%s", type, can));
 					}
 				}
@@ -285,7 +291,7 @@ public class AmqJmxQuery extends JmxConnection {
 
 	/**
 	 * Get the attribute names for a given mode
-	 * 
+	 *
 	 * @param attributes
 	 * @return
 	 */
@@ -340,7 +346,7 @@ public class AmqJmxQuery extends JmxConnection {
 
 	/**
 	 * Get the object name for a given destination
-	 * 
+	 *
 	 * @param destination
 	 *            The destination.
 	 * @return
@@ -459,7 +465,7 @@ public class AmqJmxQuery extends JmxConnection {
 
 	/**
 	 * Print the values for a givend destination
-	 * 
+	 *
 	 * @param aDest
 	 */
 	protected void printDestinationValue(ObjectName aDest) {
@@ -484,7 +490,7 @@ public class AmqJmxQuery extends JmxConnection {
 
 	/**
 	 * Just a shorthand
-	 * 
+	 *
 	 * @param str
 	 */
 	protected final void println(String str) {
