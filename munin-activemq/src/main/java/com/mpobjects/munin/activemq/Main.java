@@ -94,6 +94,7 @@ public class Main {
 	 */
 	protected static void printUsage(Output output, String[] args) {
 		output.err.println("Usage: java -jar munin-activemq.jar <values|config|autoconf|suggest|list> [<size|subscribers|traffic>] [destination ...]");
+		output.err.println("Destination: prefixed with + uses regex matching, can be inverted with +! prefix. e.g. +!queue:internal\\..*");
 		output.err.println("Received arguments: " + Arrays.toString(args));
 		output.setExitCode(1);
 	}
