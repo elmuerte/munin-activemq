@@ -28,7 +28,7 @@ SCRIPT_NAME=`basename "${SCRIPT}"`
 PLUGIN_FUNC=`basename "${0}" | sed s/^${SCRIPT_NAME}//g`
 
 # The jar file to execute
-JAR="/usr/share/java/munin-activemq.jar"
+JAR="/usr/share/maven-repo/com/mpobjects/munin/munin-activemq/debian/munin-activemq-debian.jar"
 
 # Check for if the plugin script is named correctly
 if [ -z "${PLUGIN_FUNC}" ]; then
